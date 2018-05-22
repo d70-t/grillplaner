@@ -1,4 +1,7 @@
+import json
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from django.core import serializers
 
 from .models import Answer
 from .forms import AnswerForm
@@ -15,6 +18,11 @@ def index(request):
                "my_answer_id": my_answer_id,
               }
     return render(request, 'polls/index.html', context)
+
+def json_summary(request):
+    answers = Answer.objects.all()
+    return HttpResponse(serializers.serialize('json', answers), content_type="application/json")
+
 
 def add_answer(request):
     if request.method == "GET":
