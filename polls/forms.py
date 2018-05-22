@@ -13,14 +13,8 @@ class AnswerForm(forms.ModelForm):
         self.helper.form_class = 'form-horizontal'
         self.helper.label_class = 'col-lg-2'
         self.helper.field_class = 'col-lg-8'
-        self.helper.layout = Layout(
-            'name',
-            'attends',
-            'count',
-            'brings',
-            Submit('save', 'Eintragen', css_class="btn-success"),
-            HTML('<a class="btn btn-danger" href="{% url "index" %}"><span class="glyphicon glyphicon-remove"></span>Abbrechen</a>'),
-        )
+        self.helper.layout.append(Submit('save', 'Eintragen', css_class="btn-success"))
+        self.helper.layout.append(HTML('<a class="btn btn-danger" href="{% url "index" %}"><span class="glyphicon glyphicon-remove"></span>Abbrechen</a>'))
 
     class Meta:
         model = Answer
