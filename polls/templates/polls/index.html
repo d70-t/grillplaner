@@ -1,0 +1,21 @@
+{% extends "polls/base.html" %}
+{% block "content" %}
+<table class="table table-striped">
+    <tr><th>Name</th><th>Ich komme!</th><th>Anzahl an G&auml;sten</th><th>Ich bringe mit</th><th></th></tr>
+    {% for answer in answers %}
+    <tr {% if my_answer_id == answer.id %}class="info" {% endif %}>
+        <td>{{ answer.name }}</td>
+        <td><span class="glyphicon glyphicon-{% if answer.attends %}ok{% else %}remove{% endif %}"></span></td>
+        <td>{{ answer.count }}</td>
+        <td>{% if answer.brings %}{{ answer.brings }}{% endif %}</td>
+        <td>
+        {% if my_answer_id == answer.id %}
+        <a href="{% url "del_answer" answer.id %}"><span class="glyphicon glyphicon-trash"></span></a>
+        {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+    <tr><th>Summe:</th><td></td><td>{{ total_count }}</td><td></td></tr>
+</table>
+<a class="btn btn-success" href="{% url "add_answer" %}"><span class="glyphicon glyphicon-plus"></span> Eintragen</a>
+{% endblock %}
