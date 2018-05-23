@@ -10,6 +10,7 @@
         <td>{% if answer.brings %}{{ answer.brings }}{% endif %}</td>
         <td>
         {% if answer.id in own_answers %}
+        <a href="{% url "edit_answer" answer.id %}"><span class="glyphicon glyphicon-pencil"></span></a>
         <a href="{% url "del_answer" answer.id %}"><span class="glyphicon glyphicon-trash"></span></a>
         {% endif %}
         </td>

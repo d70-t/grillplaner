@@ -31,11 +31,17 @@ def json_summary(request):
     return HttpResponse(serializers.serialize('json', answers), content_type="application/json")
 
 
-def add_answer(request):
+def add_answer(request, answer_id=None):
     if request.method == "GET":
-        form = AnswerForm()
+        if answer_id is not None:
+            form = AnswerForm(instance=Answer.objects.get(id=int(answer_id)))
+        else:
+            form = AnswerForm()
     elif request.method == "POST":
-        form = AnswerForm(request.POST)
+        if answer_id is not None:
+            form = AnswerForm(request.POST, instance=Answer.objects.get(id=int(answer_id)))
+        else:
+            form = AnswerForm(request.POST)
         if form.is_valid():
             answer = form.save()
             response = redirect("index")
