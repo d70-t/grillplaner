@@ -7,6 +7,9 @@ class Answer(models.Model):
     brings = models.CharField(max_length=1000, verbose_name="Ich bringe mit", null=True, blank=True)
     email = models.EmailField(null=True, blank=True)
 
+    def __str__(self):
+        return "<Answer of \"{}\">".format(self.name)
+
 
 class Question(models.Model):
     question_text = models.CharField(max_length=200)
