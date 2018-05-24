@@ -6,6 +6,8 @@ from django.core import serializers
 from .models import Answer
 from .forms import AnswerForm
 
+COOKIE_DURATION = 60 * 60 * 24 * 14 # two weeks
+
 def own_answers(request):
     answer_ids = request.COOKIES.get("answer-ids", None)
     if answer_ids is not None and len(answer_ids) > 0:
@@ -47,7 +49,7 @@ def add_answer(request, answer_id=None):
             response = redirect("index")
             answer_ids = own_answers(request)
             answer_ids.add(answer.id)
-            response.set_cookie("answer-ids", ",".join(map(str, answer_ids)))
+            response.set_cookie("answer-ids", ",".join(map(str, answer_ids)), max_age=COOKIE_DURATION)
             return response
     return render(request, 'polls/add_answer.html', {"form": form})
 
@@ -58,5 +60,9 @@ def del_answer(request, answer_id):
     response = redirect("index")
     if request.COOKIES.get("answer-id", None) == str(answer_id):
         response.delete_cookie("answer-id")
-    response.set_cookie("answer-ids", ",".join(map(str, own_answers(request) - {answer_id})))
+    new_ids = own_answers(request) - {answer_id}
+    if len(new_ids) > 0:
+        response.set_cookie("answer-ids", ",".join(map(str, new_ids)), max_age=COOKIE_DURATION)
+    else:
+        response.delete_cookie("answer-ids")
     return response
