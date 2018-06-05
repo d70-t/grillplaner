@@ -7,7 +7,7 @@
         <td>{{ answer.name }}</td>
         <td><span class="glyphicon glyphicon-{% if answer.attends %}ok{% else %}remove{% endif %}"></span></td>
         <td>{{ answer.count }}</td>
-        <td>{% if answer.brings %}{{ answer.brings }}{% endif %}</td>
+        <td>{% if answer.brings and answer.attends %}{{ answer.brings }}{% endif %}</td>
         <td>
         {% if answer.id in own_answers %}
         <a href="{% url "edit_answer" answer.id %}"><span class="glyphicon glyphicon-pencil"></span></a>
@@ -16,7 +16,7 @@
         </td>
     </tr>
     {% endfor %}
-    <tr><th>Summe:</th><td></td><td>{{ total_count }}</td><td></td><td></td></tr>
+    <tr><th>Summe:</th><td></td><td>{{ total_coming }}({{total_count}})</td><td></td><td></td></tr>
 </table>
 <a class="btn btn-success" href="{% url "add_answer" %}"><span class="glyphicon glyphicon-plus"></span> Eintragen</a>
 {% endblock %}

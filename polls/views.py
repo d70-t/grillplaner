@@ -2,6 +2,7 @@ import json
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.core import serializers
+from django.db.models import Sum
 
 from .models import Answer
 from .forms import AnswerForm
@@ -21,9 +22,11 @@ def own_answers(request):
 def index(request):
     answers = Answer.objects.all()
     total_count = sum(answer.count for answer in answers)
+    total_coming = answers.filter(attends=True).aggregate(Sum('count'))
     context = {
                "answers": answers,
                "total_count": total_count,
+               "total_coming": total_coming['count__sum'],
                "own_answers": own_answers(request),
               }
     return render(request, 'polls/index.html', context)
